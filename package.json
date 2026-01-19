@@ -50,6 +50,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@nestjs/cli": "^11.0.16",
     "@types/dompurify": "^3.0.5",
     "@types/express": "^5.0.3",
     "@types/multer": "^2.0.0",

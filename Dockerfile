@@ -16,6 +16,6 @@ RUN npm ci --production=true
 # copy build from builder
 COPY --from=builder /app/dist ./dist
 # copy any necessary non-TS assets (e.g. prisma)
-COPY prisma ./prisma
+COPY src/prisma ./src/prisma
 EXPOSE 3000
 CMD ["node", "dist/main"]

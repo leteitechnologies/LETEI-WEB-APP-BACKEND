@@ -63,53 +63,85 @@ export class BookPilotService {
   }
 
   /** Fire-and-forget notification logic */
-  private async notifyAsync(submission: any) {
-    // build admin email body
-    const adminHtml = this.mailer.buildLayout({
-      title: `New Book Pilot Request: ${this.escape(submission.name)}`,
-      preheader: `New pilot request from ${this.escape(submission.name)}`,
-      bodyHtml: `
-        <p><strong>Name:</strong> ${this.escape(submission.name)}</p>
-        <p><strong>Email:</strong> ${this.escape(submission.email)}</p>
-        <p><strong>Company:</strong> ${this.escape(submission.company)}</p>
-        <p><strong>IP:</strong> ${this.escape(submission.ip ?? '-')}</p>
-        <p><strong>User Agent:</strong><br/>${this.escape(submission.userAgent ?? '-')}</p>
-        <p>Submission ID: ${this.escape(String(submission.id))}</p>
-      `,
-      footerNote: 'Automated notification.',
-    });
+private async notifyAsync(submission: any) {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const fromEmail = process.env.EMAIL_FROM;
 
-    const ackHtml = this.mailer.renderContactAcknowledgement({
-      name: submission.name,
-      supportUrl: process.env.SUPPORT_URL,
-    });
-
-    // Use Promise.allSettled so we don't throw on single failure
-    const tasks = [
-      this.mailer.sendMail({
-        to: process.env.ADMIN_EMAIL,
-        from: process.env.EMAIL_FROM,
-        subject: `New Book Pilot request — ${submission.name}`,
-        html: adminHtml,
-      }),
-      this.mailer.sendMail({
-        to: submission.email,
-        from: process.env.EMAIL_FROM,
-        subject: `Thanks for requesting a pilot`,
-        html: ackHtml,
-      }),
-    ];
-
-    const results = await Promise.allSettled(tasks);
-    // update DB status based on results
-    const ok = results.every(r => r.status === 'fulfilled');
+  if (!fromEmail) {
+    this.logger.error('EMAIL_FROM not configured — skipping all email notifications for book pilot.');
+    // update DB to FAILED because we couldn't attempt sends
     await this.prisma.bookPilotSubmission.update({
       where: { id: submission.id },
-      data: { status: ok ? 'COMPLETED' : 'FAILED' },
+      data: { status: 'FAILED' },
     });
-    this.logger.log(`Notifications for submission ${submission.id} finished. success=${ok}`);
-    return results;
+    return [];
   }
+
+  const adminHtml = this.mailer.buildLayout({
+    title: `New Book Pilot Request: ${this.escape(submission.name)}`,
+    preheader: `New pilot request from ${this.escape(submission.name)}`,
+    bodyHtml: `
+      <p><strong>Name:</strong> ${this.escape(submission.name)}</p>
+      <p><strong>Email:</strong> ${this.escape(submission.email)}</p>
+      <p><strong>Company:</strong> ${this.escape(submission.company)}</p>
+      <p><strong>IP:</strong> ${this.escape(submission.ip ?? '-')}</p>
+      <p><strong>User Agent:</strong><br/>${this.escape(submission.userAgent ?? '-')}</p>
+      <p>Submission ID: ${this.escape(String(submission.id))}</p>
+    `,
+    footerNote: 'Automated notification.',
+  });
+
+  const ackHtml = this.mailer.renderContactAcknowledgement({
+    name: submission.name,
+    supportUrl: process.env.SUPPORT_URL,
+  });
+
+  const tasks: Promise<any>[] = [];
+
+  if (adminEmail) {
+    tasks.push(this.mailer.sendMail({
+      to: adminEmail,
+      from: fromEmail,
+      subject: `New Book Pilot request — ${submission.name}`,
+      html: adminHtml,
+    }));
+  } else {
+    this.logger.warn('ADMIN_EMAIL not configured — skipping admin notification.');
+  }
+
+  if (submission.email) {
+    tasks.push(this.mailer.sendMail({
+      to: submission.email,
+      from: fromEmail,
+      subject: `Thanks for requesting a pilot`,
+      html: ackHtml,
+    }));
+  } else {
+    this.logger.warn(`Submission ${submission.id} has no email — skipping acknowledgement to user.`);
+  }
+
+  // If nothing to do, mark FAILED (or change logic if you prefer COMPLETED)
+  if (tasks.length === 0) {
+    this.logger.warn(`No email tasks to run for submission ${submission.id}. Marking as FAILED.`);
+    await this.prisma.bookPilotSubmission.update({
+      where: { id: submission.id },
+      data: { status: 'FAILED' },
+    });
+    return [];
+  }
+
+  const results = await Promise.allSettled(tasks);
+  const ok = results.every(r => r.status === 'fulfilled');
+
+  await this.prisma.bookPilotSubmission.update({
+    where: { id: submission.id },
+    data: { status: ok ? 'COMPLETED' : 'FAILED' },
+  });
+
+  this.logger.log(`Notifications for submission ${submission.id} finished. success=${ok}`);
+  return results;
+}
+
 
   private escape(input: string) {
     return String(input)

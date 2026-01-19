@@ -70,6 +70,13 @@ export class NewsletterService {
   }
 
   private async notifyAsync(subscription: any) {
+    const adminEmail = process.env.ADMIN_EMAIL;
+const fromEmail = process.env.EMAIL_FROM;
+
+if (!adminEmail || !fromEmail) {
+  this.logger.error('Missing ADMIN_EMAIL or EMAIL_FROM env vars');
+  return;
+}
     const adminHtml = this.mailer.buildLayout({
       title: `New Subscribe request: ${this.escape(subscription.email)}`,
       preheader: `New subscription by ${this.escape(subscription.email)}`,
@@ -187,20 +194,21 @@ const ackHtml = this.mailer.buildLayout({
 
 
 
-    const tasks = [
-      this.mailer.sendMail({
-        to: process.env.ADMIN_EMAIL,
-        from: process.env.EMAIL_FROM,
-        subject: `New subscription — ${subscription.email}`,
-        html: adminHtml,
-      }),
-      this.mailer.sendMail({
-        to: subscription.email,
-        from: process.env.EMAIL_FROM,
-        subject: `Thanks for subscribing`,
-        html: ackHtml,
-      }),
-    ];
+const tasks = [
+  this.mailer.sendMail({
+    to: adminEmail,
+    from: fromEmail,
+    subject: `New subscription — ${subscription.email}`,
+    html: adminHtml,
+  }),
+  this.mailer.sendMail({
+    to: subscription.email,
+    from: fromEmail,
+    subject: `Thanks for subscribing`,
+    html: ackHtml,
+  }),
+];
+
 
     const results = await Promise.allSettled(tasks);
     const ok = results.every(r => r.status === 'fulfilled');

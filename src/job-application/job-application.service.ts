@@ -134,6 +134,14 @@ export class JobApplicationService {
    * notifyAsync: send admin notification and candidate ack; update DB status on completion
    */
   private async notifyAsync(application: any) {
+      const adminEmail = process.env.ADMIN_EMAIL;
+  const fromEmail = process.env.EMAIL_FROM;
+
+  if (!adminEmail || !fromEmail) {
+    this.logger.error('Missing ADMIN_EMAIL or EMAIL_FROM env vars');
+    return;
+  }
+
     const adminHtml = this.mailer.buildLayout({
       title: `New job application — ${this.escape(application.name)}`,
       preheader: `New application from ${this.escape(application.name)}`,
@@ -154,20 +162,21 @@ export class JobApplicationService {
       supportUrl: process.env.SUPPORT_URL,
     });
 
-    const tasks = [
-      this.mailer.sendMail({
-        to: process.env.ADMIN_EMAIL,
-        from: process.env.EMAIL_FROM,
-        subject: `New job application — ${application.name}`,
-        html: adminHtml,
-      }),
-      this.mailer.sendMail({
-        to: application.email,
-        from: process.env.EMAIL_FROM,
-        subject: `Thanks for your application`,
-        html: ackHtml,
-      }),
-    ];
+  const tasks = [
+    this.mailer.sendMail({
+      to: adminEmail,  // now guaranteed string
+      from: fromEmail,
+      subject: `New job application — ${application.name}`,
+      html: adminHtml,
+    }),
+    this.mailer.sendMail({
+      to: application.email,  // this should always exist
+      from: fromEmail,
+      subject: `Thanks for your application`,
+      html: ackHtml,
+    }),
+  ];
+
 
     const results = await Promise.allSettled(tasks);
     const ok = results.every((r) => r.status === 'fulfilled');

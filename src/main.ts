@@ -12,7 +12,7 @@ async function bootstrap() {
   // read a comma-separated list of allowed origins from env
 const raw =
   process.env.FRONTEND_ORIGIN ||
-  "http://localhost:3001,http://localhost:3002,http://192.168.8.12:3001,http://192.168.8.12:3002,http://localhost:3000";
+  "http://localhost:3001,http://localhost:3002,http://192.168.8.12:3001,http://192.168.8.12:3002,http://localhost:3000,https://letei-web-app-frontend.vercel.app";
 
 
   const allowed = raw.split(",").map(s => s.trim()).filter(Boolean);

@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2023",
+    "outDir": "./dist",
+    "declaration": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+       "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
+
+    // ← Tell TS where to find custom typings:
+    "typeRoots": [
+      "src/@types/express/",          // <-- your ambient .d.ts files
+      "node_modules/@types" // <-- the default
+    ]
+  },
+  "include": [
+     "src/**/*.ts",
+   "src/@types/**/*.d.ts" // your custom type declarations
+, "src/letei-one-page/LeteiOnePage.module.ts"  ],
+  "exclude": ["node_modules", "dist"]
+}

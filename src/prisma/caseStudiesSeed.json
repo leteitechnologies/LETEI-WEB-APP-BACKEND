@@ -1,0 +1,146 @@
+[
+  {
+    "id": "healthstart",
+    "slug": "healthstart-patient-triage",
+    "client": "HealthStart",
+    "clientLogo": { "src": "https://res.cloudinary.com/dahrcnjfh/image/upload/v1755593277/healthstart-logo_zksghm.png", "alt": "HealthStart logo" },
+    "sector": "Healthcare",
+    "timeline": "12 weeks",
+    "startDate": "2024-01-05",
+    "endDate": "2024-03-30",
+    "readTime": 3,
+    "tags": ["kenya", "health"],
+    "platforms": ["web", "mobile"],
+    "hero": { "src": "/images/healthstart-hero.jpg", "alt": "Nurse using triage app" },
+    "short": "A patient triage system that reduced wait times and manual load.",
+    "problem": "Long patient wait times and drop-off during triage; manual workflows causing high operational load.",
+    "approach": "User research, intake flow redesign, iterative prototypes with clinicians.",
+    "solution": "Built a triage web app, streamlined intake flows and introduced automated routing and basic analytics.",
+    "results": [
+      "40% reduction in wait times",
+      "30% decrease in manual triage work",
+      "Improved patient follow-up rates by 22%"
+    ],
+    "metrics": [
+      { "label": "Adoption lift", "value": 40, "unit": "%" },
+      { "label": "Lives reached", "value": 120000, "unit": "people" }
+    ],
+    "quote": {
+      "text": "Their team helped us build a patient triage system that reduced wait times by 40%.",
+      "author": "Dr. Amina",
+      "role": "Founder, HealthStart"
+    },
+    "team": [
+      { "name": "You", "role": "Product Lead" },
+      { "name": "Dev Team", "role": "Engineering" }
+    ],
+    "techStack": ["React", "Node.js", "Postgres"],
+    "resources": [{ "label": "Demo", "url": "https://healthstart.example/demo" }],
+    "seo": {
+      "title": "HealthStart — patient triage app case study",
+      "description": "How HealthStart reduced patient wait times by 40%.",
+      "canonical": "https://example.com/case-studies/healthstart-patient-triage"
+    },
+    "publishedAt": "2024-04-15",
+    "featured": true
+  },
+
+  {
+    "id": "agritech",
+    "slug": "agrotrack-iot-farm-monitoring",
+    "client": "AgroTrack",
+    "clientLogo": { "src": "https://res.cloudinary.com/dahrcnjfh/image/upload/v1755593496/agrotrack-logo_vdamnt.png", "alt": "AgroTrack logo" },
+    "sector": "Agriculture",
+    "timeline": "16 weeks",
+    "startDate": "2024-02-01",
+    "endDate": "2024-05-01",
+    "readTime": 4,
+    "tags": ["agriculture", "iot", "global"],
+    "platforms": ["web", "backend", "iot"],
+    "hero": { "src": "/images/agritech-hero.jpg", "alt": "Field sensors and dashboard" },
+    "short": "IoT-powered farm monitoring to improve yields and reduce waste.",
+    "problem":
+      "Farmers lacked real-time insights into soil health and crop conditions, leading to lower yields and inefficient water use.",
+    "approach":
+      "Deployed low-power soil sensors, connected edge gateways, and built a web dashboard with predictive models trained on historical data.",
+    "solution":
+      "Developed an IoT-based platform with soil sensors, weather integrations, and predictive analytics to provide actionable recommendations to farmers.",
+    "results": [
+      "25% increase in average crop yield",
+      "15% reduction in water usage",
+      "Early detection of crop diseases in 70% of flagged cases"
+    ],
+    "metrics": [
+      { "label": "Farms onboarded", "value": 350, "unit": "farms" },
+      { "label": "Water saved", "value": 1200000, "unit": "liters" }
+    ],
+    "quote": {
+      "text": "We finally have data to make smarter farming decisions. Yields have never been this high.",
+      "author": "Samuel Mwangi",
+      "role": "Lead Agronomist, AgroTrack"
+    },
+    "team": [
+      { "name": "You", "role": "Product Lead" },
+      { "name": "IoT Team", "role": "Hardware & Firmware" },
+      { "name": "ML Team", "role": "Data Science" }
+    ],
+    "techStack": ["Embedded C", "MQTT", "Node.js", "Postgres", "Python (ML)"],
+    "resources": [
+      { "label": "Pilot Report (PDF)", "url": "/downloads/agrotrack-pilot-report.pdf" }
+    ],
+    "seo": {
+      "title": "AgroTrack — IoT farm monitoring case study",
+      "description": "How AgroTrack improved yields and saved water using IoT and predictive analytics.",
+      "canonical": "https://example.com/case-studies/agrotrack-iot-farm-monitoring"
+    },
+    "publishedAt": "2024-06-10"
+  },
+  {
+    "id": "edufuture",
+    "slug": "edulift-adaptive-learning",
+    "client": "EduLift",
+    "clientLogo": { "src": "https://res.cloudinary.com/dahrcnjfh/image/upload/v1755593602/edulift-logo_dhykvr.png", "alt": "EduLift logo" },
+    "sector": "Education",
+    "timeline": "10 weeks",
+    "startDate": "2024-03-15",
+    "endDate": "2024-05-24",
+    "readTime": 5,
+    "tags": ["education", "AI"],
+    "platforms": ["web"],
+    "hero": { "src": "/images/edufuture-hero.jpg", "alt": "Students using tablets" },
+    "short": "AI-driven adaptive learning platform for under-resourced schools.",
+    "problem":
+      "Students in rural schools had varying learning paces but lessons were delivered uniformly, causing disengagement and low pass rates.",
+    "approach":
+      "Conducted classroom observations, built adaptive learning models, and pilot-tested with teachers to refine content pacing.",
+    "solution":
+      "Created an AI-based platform that adjusts lesson difficulty in real time based on individual student performance and provides teacher dashboards for interventions.",
+    "results": [
+      "20% improvement in exam pass rates",
+      "Higher engagement scores among students",
+      "Personalized learning paths for 90% of active users"
+    ],
+    "metrics": [
+      { "label": "Schools onboarded", "value": 80, "unit": "schools" },
+      { "label": "Active students", "value": 12000, "unit": "students" }
+    ],
+    "quote": {
+      "text": "EduLift has transformed how our students learn — they stay engaged and learn at their own pace.",
+      "author": "Grace Otieno",
+      "role": "Principal, Nyota Primary"
+    },
+    "team": [
+      { "name": "You", "role": "Product Lead" },
+      { "name": "Content Team", "role": "Curriculum" },
+      { "name": "ML Team", "role": "Algorithms" }
+    ],
+    "techStack": ["React", "Python (TensorFlow)", "Postgres"],
+    "resources": [{ "label": "Teacher Guide", "url": "/downloads/edulift-teacher-guide.pdf" }],
+    "seo": {
+      "title": "EduLift — adaptive learning case study",
+      "description": "How EduLift used AI to personalize learning and improve exam pass rates.",
+      "canonical": "https://example.com/case-studies/edulift-adaptive-learning"
+    },
+    "publishedAt": "2024-07-01"
+  }
+]
